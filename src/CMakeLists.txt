@@ -14,7 +14,7 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # Set project
-project(${PROJECT_NAME} C)
+project(${PROJECT_NAME} CXX)
 
 # Add definition
 if(CMAKE_BUILD_TYPE MATCHES Debug)
@@ -23,23 +23,11 @@ endif()
 
 # Include directory
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/galib/src)
 
 # Set file list
-file(GLOB PROJECT_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.c)
-set(PROJECT_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/gep.h)
-
-# Check type size
-include(CheckTypeSize)
-set(CMAKE_EXTRA_INCLUDE_FILES ${CMAKE_CURRENT_SOURCE_DIR}/gep.h)
-check_type_size("union GEP_NODE" SIZEOF_GEP)
-set(CMAKE_EXTRA_INCLUDE_FILES)
-
-# Setup galib
-set(GA_TYPE "struct { char size[${SIZEOF_GEP}]; }" CACHE STRING "GA variable type")
-set(GA_PREFIX "gep" CACHE STRING "GA function prefix")
-
-# Add galib
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/galib/src)
+file(GLOB PROJECT_SRCS ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
+set(PROJECT_HEADER ${CMAKE_CURRENT_SOURCE_DIR}/gep.hpp)
 
 # Build library
 add_library(${PROJECT_NAME} STATIC ${PROJECT_SRCS})
