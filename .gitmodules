@@ -1,0 +1,3 @@
+[submodule "src/galib"]
+	path = src/galib
+	url = git@140.127.205.188:jamesljlster/galib.git
