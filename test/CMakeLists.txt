@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 2.8)
 
 # Set project
-project(gep_test C)
+project(gep_test CXX)
 
 # Set file list
 file(GLOB PROJECT_SRCS 
-	${CMAKE_CURRENT_SOURCE_DIR}/*.c
+	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 	)
 
 file(GLOB TEST_TXT
