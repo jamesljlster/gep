@@ -6,6 +6,10 @@ set(CMAKE_C_FLAGS_RELEASE "-O3")
 # Set project
 project(gep_test CXX)
 
+# csv deps
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/test_deps/CSV_DataProc/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/test_deps/CSV_DataProc/src)
+
 # Set file list
 file(GLOB PROJECT_SRCS 
 	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
@@ -16,7 +20,7 @@ file(GLOB TEST_TXT
 	)
 
 # Set dependences
-set(PROJECT_DEPS gep m)
+set(PROJECT_DEPS gep csv_dataproc m)
 if(UNIX)
 	find_library(CONIO_LIB conio
 		"/usr/lib"
