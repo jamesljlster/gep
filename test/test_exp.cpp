@@ -13,10 +13,10 @@
 #define RAND_EXP_MAX	3
 #define RAND_EXP_MIN	-3
 
-#define LEVEL	5
+#define LEVEL	4
 #define INPUTS	1
 
-#define MUT_RATE		0.1
+#define MUT_RATE		0.5
 #define ITER_LIMIT		10000
 
 #define RANGE_MIN	0
@@ -78,11 +78,18 @@ int main()
 	{
 		ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
 	}
+	
+	int limitPoolSize = ga.pool_size();
 
 	// Run task
 	int counter = 0;
 	while(counter++ < ITER_LIMIT)
 	{
+		if(counter % 100 == 0)
+		{
+			ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
+		}
+
 		// Generate random index array
 		int poolSize = ga.pool_size();
 		vector<int> randIndex = gen_rand_index_vector(poolSize, poolSize * poolSize / 2);
@@ -94,7 +101,7 @@ int main()
 		}
 
 		// Mutation
-		for(int i = poolSize; i < 2 * poolSize; i++)
+		for(int i = 0; i < 2 * poolSize; i++)
 		{
 			for(int j = 0; j < chroLen; j++)
 			{
@@ -108,11 +115,15 @@ int main()
 		// Order
 		ga.order(fitness, 1, (void*)&fitData);
 		double tmpFitness = fitness(ga.get_chro(0), (void*)&fitData);
-		cout << "Iter " << counter <<  ", fitness: " <<  tmpFitness << endl;
+		cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
+		gep_print_chro(ga.get_chro(0), cout);
+		cout << endl;
 
 		// Kill after
-		ga.kill_after(poolSize - 1);
+		ga.kill_after(limitPoolSize - 1);
 	}
+
+	delete[] dataset;
 
 	return 0;
 }

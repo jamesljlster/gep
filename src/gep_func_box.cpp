@@ -39,6 +39,35 @@ namespace gep
 		return b;
 	}
 
+	double gep_op2t_min(double a, double b)
+	{
+		if(a > b)
+		{
+			return b;
+		}
+		else
+		{
+			return a;
+		}
+	}
+
+	double gep_op2t_max(double a, double b)
+	{
+		if(a > b)
+		{
+			return a;
+		}
+		else
+		{
+			return b;
+		}
+	}
+
+	double gep_op2t_pow(double a, double b)
+	{
+		return pow(a, b);
+	}
+
 	double gep_op1t_linear(double a)
 	{
 		return a;
@@ -52,18 +81,45 @@ namespace gep
 			return sqrt(a);
 	}
 
+	double gep_op1t_pow2(double a)
+	{
+		return pow(a, 2);
+	}
+
+	double gep_op1t_pow3(double a)
+	{
+		return pow(a, 3);
+	}
+
+	double gep_op1t_exp(double a)
+	{
+		return exp(a);
+	}
+
+	double gep_op1t_abs(double a)
+	{
+		return fabs(a);
+	}
+
 	struct GEP_FUNC_OP2T gep_op2t_func_box[] = {
 		{"+",	gep_op2t_add},
 		{"-",	gep_op2t_sub},
 		{"*",	gep_op2t_mul},
 		{"/",	gep_op2t_div},
 		{"tl",	gep_op2t_take_left},
-		{"tr",	gep_op2t_take_right}
+		{"tr",	gep_op2t_take_right},
+		{"min",	gep_op2t_min},
+		{"max", gep_op2t_max},
+		{"pow",	gep_op2t_pow}
 	};
 
 	struct GEP_FUNC_OP1T gep_op1t_func_box[] = {
 		{"",		gep_op1t_linear},
-		{"sqrt",	gep_op1t_sqrt}
+		{"sqrt",	gep_op1t_sqrt},
+		{"pow2",	gep_op1t_pow2},
+		{"pow3",	gep_op1t_pow3},
+		{"exp",		gep_op1t_exp},
+		{"abs",		gep_op1t_abs}
 	};
 
 }
