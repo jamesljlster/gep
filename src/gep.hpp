@@ -69,6 +69,9 @@ namespace gep
 		int precision;
 	};
 
+	extern double (*gep_op2t_func_box[])(double, double);
+	extern double (*gep_op1t_func_box[])(double);
+
 	double gep_rand_real(int numMax, int numMin, int expMax, int expMin, int precision);
 	std::vector<union GEP_NODE> gep_rand_chro(struct GEP_RAND randSet, int treeLevel, int inputs);
 	union GEP_NODE gep_rand_node(struct GEP_RAND randSet);

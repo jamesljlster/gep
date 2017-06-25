@@ -21,6 +21,7 @@ namespace gep
 		}
 
 		// Calculate
+		int tmpIndex;
 		switch(chro[nodeIndex].type)
 		{
 			case GEP_TYPE_TERMINAL:
@@ -29,7 +30,7 @@ namespace gep
 
 			case GEP_TYPE_VARIABLE:
 				// Checking
-				int tmpIndex = chro[nodeIndex].var.index;
+				tmpIndex = chro[nodeIndex].var.index;
 				if(tmpIndex >= inputs.size())
 				{
 					string tmp = __FUNCTION__;
@@ -47,6 +48,9 @@ namespace gep
 				// Calculate leaf values
 				double ter1 = gep_tree_calc_recursive(chro, inputs, layerIndex + 1, index * 2);
 				double ter2 = gep_tree_calc_recursive(chro, inputs, layerIndex + 1, index * 2 + 1);
+				ret = gep_op1t_func_box[chro[nodeIndex].op.prefixOp](
+						gep_op2t_func_box[chro[nodeIndex].op.op](ter1, ter2)
+						);
 
 				break;
 
