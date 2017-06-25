@@ -29,6 +29,16 @@ namespace gep
 			return 0;
 	}
 
+	double gep_op2t_take_left(double a, double b)
+	{
+		return a;
+	}
+
+	double gep_op2t_take_right(double a, double b)
+	{
+		return b;
+	}
+
 	double gep_op1t_linear(double a)
 	{
 		return a;
@@ -46,7 +56,9 @@ namespace gep
 		{"+",	gep_op2t_add},
 		{"-",	gep_op2t_sub},
 		{"*",	gep_op2t_mul},
-		{"/",	gep_op2t_div}
+		{"/",	gep_op2t_div},
+		{"tl",	gep_op2t_take_left},
+		{"tr",	gep_op2t_take_right}
 	};
 
 	struct GEP_FUNC_OP1T gep_op1t_func_box[] = {
