@@ -3,9 +3,11 @@
 #include <ctime>
 #include <cmath>
 #include <vector>
+#include <omp.h>
 
 #include <csv_dataproc.h>
 #include <galib.hpp>
+#include <evo.hpp>
 #include <gep.hpp>
 
 #define RAND_PRECISION	1000
@@ -16,10 +18,9 @@
 
 #define LEVEL	4
 
-#define MUT_RATE		0.9
-#define MUT_DECAY		0.996
-#define ITER_LIMIT		30000
-#define RESTART			10
+#define MUT_RATE		0.1
+#define ITER_LIMIT		300000
+#define RESTART			1000
 #define RESTART_ADD		10
 #define POOL_WEIGHT		10
 
@@ -34,10 +35,12 @@
 
 using namespace std;
 using namespace gep;
+using namespace evo;
 
 double fitness(vector<union GEP_NODE> chro, void* arg);
+
 vector<int> gen_rand_index_vector(int size, int swap);
-double* dataprep(int rows);
+vector<char> gen_crossover_mask(int size, int swap);
 
 int main()
 {
@@ -85,7 +88,13 @@ int main()
 	double tmpFitness = 0;
 	while(counter++ < ITER_LIMIT)
 	{
+		tmpFitness = fitness(ga.get_chro(0), (void*)tra);
+		cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
+		gep_print_chro(ga.get_chro(0), cout);
+		mutRate = MUT_RATE * (tmpFitness * tmpFitness / (double)counter);
+
 		// Restart
+		/*
 		if(counter % RESTART == 0)
 		{
 			ga.remove_same_chro();
@@ -93,9 +102,8 @@ int main()
 			{
 				ga.insert(gep_rand_chro(randSet, LEVEL, inputSize));
 			}
-
-			mutRate = MUT_RATE * (tmpFitness / (double)counter);
 		}
+		*/
 
 		// Generate random index array
 		int poolSize = ga.pool_size();
@@ -104,19 +112,27 @@ int main()
 		// Crossover
 		for(int i = 0; i < poolSize; i++)
 		{
-			ga.crossover(randIndex[i], randIndex[(i + 1) % poolSize], rand() % (chroLen - 1));
+			vector<char> mask = gen_crossover_mask(chroLen, chroLen * chroLen / 2);
+			ga.insert(crossover_mask(
+						mask,
+						ga.get_chro(randIndex[i]),
+						ga.get_chro(randIndex[(i + 1) % poolSize])));
 		}
 
 		// Mutation
-		for(int i = 0; i < 2 * poolSize; i++)
+		for(int i = 0; i < poolSize; i++)
 		{
 			for(int j = 0; j < chroLen; j++)
 			{
 				if(rand() % 100 < mutRate * 100)
 				{
-					union GEP_NODE tmpNode = gep_rand_node(randSet, inputSize);
+					union GEP_NODE tmpNode;
 
-					if(j >= headSize && tmpNode.type == GEP_TYPE_OPERATOR)
+					if(j < headSize)
+					{
+						tmpNode = gep_rand_op();
+					}
+					else
 					{
 						if(rand() % 2 == 0)
 						{
@@ -135,9 +151,6 @@ int main()
 
 		// Order
 		ga.order(fitness, 1, (void*)tra);
-		tmpFitness = fitness(ga.get_chro(0), (void*)tra);
-		cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
-		gep_print_chro(ga.get_chro(0), cout);
 		cout << endl;
 
 		// Kill after
@@ -151,20 +164,30 @@ int main()
 double fitness(vector<union GEP_NODE> chro, void* arg)
 {
 	csv_t csv = (csv_t)arg;
+
+	int rows = csv->rows;
+	int cols = csv->cols;
+	double* data = csv->data;
+
+	static int counter = 0;
 	
-	double mse;
-	for(int i = 0; i < csv->rows; i++)
+	double mse = 0;
+	//for(int i = 0; i < csv->rows; i++)
 	{
+		int i = counter++;
+		if(counter == rows)
+			counter = 0;
+
 		// Set inputs
 		vector<double> inputs;
 		for(int j = 0; j < csv->cols - 1; j++)
 		{
-			inputs.push_back(csv_get_value(csv, i, j));
+			inputs.push_back(data[i * cols + j]);
 		}
 
 		// Find error
 		double out = gep_tree_calc(chro, inputs);
-		mse += pow(out - csv_get_value(csv, i, csv->cols - 1), 2);
+		mse += pow(out - data[(i + 1) * cols - 1], 2);
 	}
 	
 	return mse / (double)csv->rows;
@@ -190,5 +213,17 @@ vector<int> gen_rand_index_vector(int size, int swap)
 	}
 
 	return indexVector;
+}
+
+vector<char> gen_crossover_mask(int size, int swap)
+{
+	vector<char> mask;
+	mask.reserve(size);
+	for(int i = 0; i < size; i++)
+	{
+		mask.push_back(rand() % 2);
+	}
+
+	return mask;
 }
 
