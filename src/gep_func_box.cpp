@@ -101,6 +101,19 @@ namespace gep
 		return fabs(a);
 	}
 
+	double gep_op1t_log(double a)
+	{
+		return log(a);
+	}
+
+	double gep_op1t_inv(double a)
+	{
+		if(a != 0)
+			return 1.0 / a;
+		else
+			return 0;
+	}
+
 	struct GEP_FUNC_OP2T gep_op2t_func_box[] = {
 		{"+",	gep_op2t_add},
 		{"-",	gep_op2t_sub},
@@ -119,7 +132,9 @@ namespace gep
 		{"pow2",	gep_op1t_pow2},
 		{"pow3",	gep_op1t_pow3},
 		{"exp",		gep_op1t_exp},
-		{"abs",		gep_op1t_abs}
+		{"abs",		gep_op1t_abs},
+		{"log",		gep_op1t_log},
+		{"inv",		gep_op1t_inv}
 	};
 
 }

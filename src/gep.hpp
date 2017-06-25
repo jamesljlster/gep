@@ -29,6 +29,8 @@ namespace gep
 		GEP_OP1T_POW3,
 		GEP_OP1T_EXP,
 		GEP_OP1T_ABS,
+		GEP_OP1T_LOG,
+		GEP_OP1T_INV,
 
 		GEP_OP1T_AMOUNT
 	}; 
