@@ -36,7 +36,10 @@ namespace gep
 
 	double gep_op1t_sqrt(double a)
 	{
-		return sqrt(fabs(a));
+		if(a < 0)
+			return -sqrt(fabs(a));
+		else
+			return sqrt(a);
 	}
 
 	struct GEP_FUNC_OP2T gep_op2t_func_box[] = {
