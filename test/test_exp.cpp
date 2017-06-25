@@ -16,10 +16,11 @@
 #define LEVEL	4
 #define INPUTS	1
 
-#define MUT_RATE		0.1
+#define MUT_RATE		0.01
 #define ITER_LIMIT		10000
 #define RESTART			100
 #define RESTART_ADD		10
+#define POOL_WEIGHT		10
 
 #define RANGE_MIN	0
 #define RANGE_MAX	10
@@ -77,7 +78,7 @@ int main()
 
 	// Insert random chromosomes to ga pool
 	struct GEP_RAND randSet = {RAND_NUM_MAX, RAND_NUM_MIN, RAND_EXP_MAX, RAND_EXP_MIN, RAND_PRECISION};
-	for(int i = 0; i < chroLen * 10; i++)
+	for(int i = 0; i < chroLen * POOL_WEIGHT; i++)
 	{
 		ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
 	}
