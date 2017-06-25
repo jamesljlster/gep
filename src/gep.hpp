@@ -15,6 +15,13 @@ namespace gep
 		GEP_OP_TAKE_LEFT,
 		GEP_OP_TAKE_RIGHT,
 		GEP_OP_SQRT,
+		GEP_OP_MIN,
+		GEP_OP_MAX,
+		GEP_OP_EXP,
+		GEP_OP_AVG,
+		GEP_OP_ABS,
+		GEP_OP_LOG,
+		GEP_OP_INV,
 
 		GEP_OP_AMOUNT
 	};
