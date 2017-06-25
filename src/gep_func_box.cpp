@@ -6,18 +6,6 @@ using namespace std;
 
 namespace gep
 {
-	double (*gep_op2t_func_box[])(double, double) = {
-		gep_op2t_add,
-		gep_op2t_sub,
-		gep_op2t_mul,
-		gep_op2t_div
-	};
-
-	double (*gep_op1t_func_box[])(double) = {
-		gep_op1t_linear,
-		gep_op1t_sqrt
-	};
-
 	double gep_op2t_add(double a, double b)
 	{
 		return a + b;
@@ -50,4 +38,16 @@ namespace gep
 	{
 		return sqrt(a);
 	}
+
+	double (*gep_op2t_func_box[])(double, double) = {
+		gep_op2t_add,
+		gep_op2t_sub,
+		gep_op2t_mul,
+		gep_op2t_div
+	};
+
+	double (*gep_op1t_func_box[])(double) = {
+		gep_op1t_linear,
+		gep_op1t_sqrt
+	};
 }
