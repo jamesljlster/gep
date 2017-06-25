@@ -13,10 +13,10 @@
 #define RAND_EXP_MAX	3
 #define RAND_EXP_MIN	-3
 
-#define LEVEL	3
+#define LEVEL	4
 #define INPUTS	1
 
-#define MUT_RATE		1
+#define MUT_RATE		0.1
 #define ITER_LIMIT		10000
 #define RESTART			100
 #define RESTART_ADD		10
@@ -92,7 +92,7 @@ int main()
 		if(counter % RESTART == 0)
 		{
 			ga.remove_same_chro();
-			for(int i = ga.pool_size(); i < limitPoolSize; i++)
+			for(int i = ga.pool_size(); i < limitPoolSize + RESTART_ADD; i++)
 			{
 				ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
 			}
@@ -117,7 +117,7 @@ int main()
 				{
 					union GEP_NODE tmpNode = gep_rand_node(randSet, INPUTS);
 
-					if(j >= headSize)
+					if(j >= headSize && tmpNode.type == GEP_TYPE_OPERATOR)
 					{
 						if(rand() % 2 == 0)
 						{
