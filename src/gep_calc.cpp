@@ -51,7 +51,6 @@ namespace gep
 				ret = gep_op1t_func_box[chro[nodeIndex].op.prefixOp](
 						gep_op2t_func_box[chro[nodeIndex].op.op](ter1, ter2)
 						);
-
 				break;
 
 		}
@@ -61,8 +60,7 @@ namespace gep
 
 	double gep_tree_calc(vector<union GEP_NODE> chro, vector<double> inputs)
 	{
-		double ret;
-
-		return ret;
+		return gep_tree_calc_recursive(chro, inputs, 0, 0);
 	}
 }
+
