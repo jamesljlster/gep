@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 
+#include <csv_dataproc.h>
 #include <galib.hpp>
 #include <gep.hpp>
 
@@ -14,7 +15,6 @@
 #define RAND_EXP_MIN	-3
 
 #define LEVEL	4
-#define INPUTS	2
 
 #define MUT_RATE		0.9
 #define MUT_DECAY		0.996
@@ -27,13 +27,10 @@
 #define RANGE_MAX	10
 #define RANGE_STEP	0.1
 
-#define DEBUG
+#define TRA_CSV_PATH	"booth_func_tra.csv"
+#define TST_CSV_PATH	"booth_func_tst.csv"
 
-struct FIT_DATA
-{
-	double* dataset;
-	int dataInst;
-};
+#define DEBUG
 
 using namespace std;
 using namespace gep;
@@ -47,29 +44,25 @@ int main()
 	srand(time(NULL));
 
 	// Prepare dataset
-	int dataInst = (RANGE_MAX - RANGE_MIN) / RANGE_STEP + 1;
-	double* dataset = dataprep(dataInst);
-#ifdef DEBUG
-	for(int i = 0; i < dataInst; i++)
-	{
-		for(int j = 0; j < 2; j++)
-		{
-			cout << dataset[i * 2 + j];
-			if(j == 1)
-			{
-				cout << endl;
-			}
-			else
-			{
-				cout << ", ";
-			}
-		}
-	}
-#endif
+	int iResult;
+	csv_t tra = NULL;
+	csv_t tst = NULL;
 
-	struct FIT_DATA fitData;
-	fitData.dataset = dataset;
-	fitData.dataInst = dataInst;
+	iResult = csv_read(&tra, TRA_CSV_PATH);
+	if(iResult < 0)
+	{
+		cout << "Failed to read " << TRA_CSV_PATH << endl;
+		return -1;
+	}
+
+	iResult = csv_read(&tst, TST_CSV_PATH);
+	if(iResult < 0)
+	{
+		cout << "Failed to read " << TST_CSV_PATH << endl;
+		return -1;
+	}
+
+	int inputSize = tra->cols - 1;
 
 	// Create ga pool
 	int chroLen = (1 << LEVEL) - 1;
@@ -81,7 +74,7 @@ int main()
 	struct GEP_RAND randSet = {RAND_NUM_MAX, RAND_NUM_MIN, RAND_EXP_MAX, RAND_EXP_MIN, RAND_PRECISION};
 	for(int i = 0; i < chroLen * POOL_WEIGHT; i++)
 	{
-		ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
+		ga.insert(gep_rand_chro(randSet, LEVEL, inputSize));
 	}
 	
 	int limitPoolSize = ga.pool_size();
@@ -98,7 +91,7 @@ int main()
 			ga.remove_same_chro();
 			for(int i = ga.pool_size(); i < limitPoolSize * 2; i++)
 			{
-				ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
+				ga.insert(gep_rand_chro(randSet, LEVEL, inputSize));
 			}
 
 			mutRate = MUT_RATE * (tmpFitness / (double)counter);
@@ -121,7 +114,7 @@ int main()
 			{
 				if(rand() % 100 < mutRate * 100)
 				{
-					union GEP_NODE tmpNode = gep_rand_node(randSet, INPUTS);
+					union GEP_NODE tmpNode = gep_rand_node(randSet, inputSize);
 
 					if(j >= headSize && tmpNode.type == GEP_TYPE_OPERATOR)
 					{
@@ -131,7 +124,7 @@ int main()
 						}
 						else
 						{
-							tmpNode = gep_rand_variable(INPUTS);
+							tmpNode = gep_rand_variable(inputSize);
 						}
 					}
 
@@ -141,8 +134,8 @@ int main()
 		}
 
 		// Order
-		ga.order(fitness, 1, (void*)&fitData);
-		tmpFitness = fitness(ga.get_chro(0), (void*)&fitData);
+		ga.order(fitness, 1, (void*)tra);
+		tmpFitness = fitness(ga.get_chro(0), (void*)tra);
 		cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
 		gep_print_chro(ga.get_chro(0), cout);
 		cout << endl;
@@ -152,41 +145,29 @@ int main()
 
 	}
 
-	delete[] dataset;
-
 	return 0;
 }
 
 double fitness(vector<union GEP_NODE> chro, void* arg)
 {
-	struct FIT_DATA* fitData = (struct FIT_DATA*)arg;
+	csv_t csv = (csv_t)arg;
 	
 	double mse;
-	for(int i = 0; i < fitData->dataInst; i++)
+	for(int i = 0; i < csv->rows; i++)
 	{
 		// Set inputs
 		vector<double> inputs;
-		inputs.push_back(fitData->dataset[i * 2]);
+		for(int j = 0; j < csv->cols - 1; j++)
+		{
+			inputs.push_back(csv_get_value(csv, i, j));
+		}
 
 		// Find error
 		double out = gep_tree_calc(chro, inputs);
-		mse += pow(out - fitData->dataset[i * 2 + 1], 2);
+		mse += pow(out - csv_get_value(csv, i, csv->cols - 1), 2);
 	}
 	
-	return mse / (double)fitData->dataInst;
-}
-
-double* dataprep(int rows)
-{
-	double* data = new double[rows * 2];
-
-	for(int i = RANGE_MIN; i < rows; i++)
-	{
-		data[i * 2] = i * RANGE_STEP;
-		data[i * 2 + 1] = exp(0.5 * data[i * 2]);
-	}
-
-	return data;
+	return mse / (double)csv->rows;
 }
 
 vector<int> gen_rand_index_vector(int size, int swap)
