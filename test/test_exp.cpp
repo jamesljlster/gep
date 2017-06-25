@@ -19,7 +19,7 @@
 #define MUT_RATE		0.9
 #define MUT_DECAY		0.996
 #define ITER_LIMIT		30000
-#define RESTART			100
+#define RESTART			10
 #define RESTART_ADD		10
 #define POOL_WEIGHT		10
 
@@ -198,7 +198,6 @@ vector<int> gen_rand_index_vector(int size, int swap)
 		indexVector.push_back(i);
 	}
 
-	/*
 	for(int i = 0; i < swap; i++)
 	{
 		int index1 = rand() % size;
@@ -208,7 +207,6 @@ vector<int> gen_rand_index_vector(int size, int swap)
 		indexVector[index1] = indexVector[index2];
 		indexVector[index2] = tmpValue;
 	}
-	*/
 
 	return indexVector;
 }

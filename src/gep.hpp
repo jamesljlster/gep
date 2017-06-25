@@ -22,6 +22,11 @@ namespace gep
 		GEP_OP_ABS,
 		GEP_OP_LOG,
 		GEP_OP_INV,
+		GEP_OP_SIN,
+		GEP_OP_COS,
+		GEP_OP_POW2,
+		GEP_OP_POW3,
+		GEP_OP_CURT,
 
 		GEP_OP_AMOUNT
 	};
