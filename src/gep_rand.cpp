@@ -69,10 +69,9 @@ namespace gep
 		return tmpNode;
 	}
 
-	union GEP_NODE gep_rand_node(struct GEP_RAND randSet, int inputs)
+	union GEP_NODE gep_rand_node_fixed(union GEP_NODE node, struct GEP_RAND randSet, int inputs)
 	{
-		union GEP_NODE tmpNode;
-		tmpNode.type = rand() % GEP_TYPE_AMOUNT;
+		union GEP_NODE tmpNode = node;
 		switch(tmpNode.type)
 		{
 			case GEP_TYPE_TERMINAL:
@@ -86,15 +85,8 @@ namespace gep
 				break;
 
 			case GEP_TYPE_OPERATOR:
-				if(rand() % 2 == 0)
-				{
-					tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
-				}
-				else
-				{
-					tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
-				}
-
+				tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
+				tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
 				break;
 
 			case GEP_TYPE_VARIABLE:
@@ -103,6 +95,13 @@ namespace gep
 		}
 
 		return tmpNode;
+	}
+
+	union GEP_NODE gep_rand_node(struct GEP_RAND randSet, int inputs)
+	{
+		union GEP_NODE tmpNode;
+		tmpNode.type = rand() % GEP_TYPE_AMOUNT;
+		return gep_rand_node_fixed(tmpNode, randSet, inputs);
 	}
 
 	double gep_rand_real(int numMax, int numMin, int expMax, int expMin, int precision)

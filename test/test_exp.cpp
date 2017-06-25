@@ -13,10 +13,10 @@
 #define RAND_EXP_MAX	3
 #define RAND_EXP_MIN	-3
 
-#define LEVEL	4
+#define LEVEL	3
 #define INPUTS	1
 
-#define MUT_RATE		0.5
+#define MUT_RATE		0.1
 #define ITER_LIMIT		10000
 
 #define RANGE_MIN	0
@@ -69,6 +69,7 @@ int main()
 
 	// Create ga pool
 	int chroLen = (1 << LEVEL) - 1;
+	int headSize = (1 << (LEVEL - 1)) - 1;
 	gaPool<union GEP_NODE> ga;
 	ga.set_chro_len(chroLen);
 
@@ -85,11 +86,6 @@ int main()
 	int counter = 0;
 	while(counter++ < ITER_LIMIT)
 	{
-		if(counter % 100 == 0)
-		{
-			ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
-		}
-
 		// Generate random index array
 		int poolSize = ga.pool_size();
 		vector<int> randIndex = gen_rand_index_vector(poolSize, poolSize * poolSize / 2);
@@ -107,7 +103,21 @@ int main()
 			{
 				if(rand() % 100 < MUT_RATE * 100)
 				{
-					gep_rand_node(randSet, INPUTS);
+					union GEP_NODE tmpNode = gep_rand_node(randSet, INPUTS);
+
+					if(j >= headSize)
+					{
+						if(rand() % 2 == 0)
+						{
+							tmpNode = gep_rand_terminal(randSet);
+						}
+						else
+						{
+							tmpNode = gep_rand_variable(INPUTS);
+						}
+					}
+
+					ga.edit_chro(poolSize + i, j, tmpNode);
 				}
 			}
 		}
