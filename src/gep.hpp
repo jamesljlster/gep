@@ -79,7 +79,7 @@ namespace gep
 
 	void gep_print_chro(std::vector<union GEP_NODE> chro, std::ostream& os);
 
-	double gep_tree_calc(std::vector<union GEP_NODE> chro);
+	double gep_tree_calc(std::vector<union GEP_NODE> chro, std::vector<double> inputs);
 }
 
 #endif
