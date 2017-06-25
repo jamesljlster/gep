@@ -47,8 +47,7 @@ namespace gep
 		union GEP_NODE tmpNode;
 
 		tmpNode.type = GEP_TYPE_OPERATOR;
-		tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
-		tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
+		tmpNode.op.op = rand() % GEP_OP_AMOUNT;
 
 		return tmpNode;
 	}
@@ -86,8 +85,7 @@ namespace gep
 				break;
 
 			case GEP_TYPE_OPERATOR:
-				tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
-				tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
+				tmpNode.op.op = rand() % GEP_OP_AMOUNT;
 				break;
 		}
 

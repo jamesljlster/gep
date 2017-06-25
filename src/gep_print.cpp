@@ -16,8 +16,7 @@ namespace gep
 
 	void gep_print_operator(union GEP_NODE node, ostream& os)
 	{
-		os << gep_op1t_func_box[node.op.prefixOp].name;
-		os << gep_op2t_func_box[node.op.op].name;
+		os << gep_func_box[node.op.op].name;
 	}
 
 	void gep_print_variable(union GEP_NODE node, ostream& os)

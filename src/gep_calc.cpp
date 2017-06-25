@@ -48,9 +48,7 @@ namespace gep
 				// Calculate leaf values
 				double ter1 = gep_tree_calc_recursive(chro, inputs, layerIndex + 1, index * 2);
 				double ter2 = gep_tree_calc_recursive(chro, inputs, layerIndex + 1, index * 2 + 1);
-				ret = gep_op1t_func_box[chro[nodeIndex].op.prefixOp].func(
-						gep_op2t_func_box[chro[nodeIndex].op.op].func(ter1, ter2)
-						);
+				ret = gep_func_box[chro[nodeIndex].op.op].func(ter1, ter2);
 				break;
 
 		}

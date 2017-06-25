@@ -6,23 +6,18 @@
 
 namespace gep
 {
-	enum GEP_OP2T
+	enum GEP_OP
 	{
-		GEP_OP2T_ADD,
-		GEP_OP2T_SUB,
-		GEP_OP2T_MUL,
-		GEP_OP2T_DIV,
+		GEP_OP_ADD,
+		GEP_OP_SUB,
+		GEP_OP_MUL,
+		GEP_OP_DIV,
+		GEP_OP_TAKE_LEFT,
+		GEP_OP_TAKE_RIGHT,
+		GEP_OP_SQRT,
 
-		GEP_OP2T_AMOUNT
+		GEP_OP_AMOUNT
 	};
-
-	enum GEP_OP1T
-	{
-		GEP_OP1T_LINEAR,
-		GEP_OP1T_SQRT,
-
-		GEP_OP1T_AMOUNT
-	}; 
 
 	enum GEP_TYPE
 	{
@@ -32,14 +27,8 @@ namespace gep
 
 		GEP_TYPE_AMOUNT
 	};
-
-	struct GEP_FUNC_OP1T
-	{
-		const char* name;
-		double (*func)(double);
-	};
 	
-	struct GEP_FUNC_OP2T
+	struct GEP_FUNC
 	{
 		const char* name;
 		double (*func)(double, double);
@@ -63,7 +52,6 @@ namespace gep
 	struct GEP_OPERATOR
 	{
 		int type;
-		int prefixOp;
 		int op;
 	};
 
@@ -81,8 +69,7 @@ namespace gep
 		struct GEP_VARIABLE var;
 	};
 
-	extern struct GEP_FUNC_OP2T gep_op2t_func_box[];
-	extern struct GEP_FUNC_OP1T gep_op1t_func_box[];
+	extern struct GEP_FUNC gep_func_box[];
 
 	double gep_rand_real(int numMax, int numMin, int expMax, int expMin, int precision);
 	std::vector<union GEP_NODE> gep_rand_chro(struct GEP_RAND randSet, int treeLevel, int inputs);
