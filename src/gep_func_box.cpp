@@ -29,6 +29,16 @@ namespace gep
 			return 0;
 	}
 
+	double gep_op2t_take_left(double a, double b)
+	{
+		return a;
+	}
+
+	double gep_op2t_take_right(double a, double b)
+	{
+		return b;
+	}
+
 	double gep_op1t_linear(double a)
 	{
 		return a;
@@ -36,18 +46,25 @@ namespace gep
 
 	double gep_op1t_sqrt(double a)
 	{
-		return sqrt(a);
+		if(a < 0)
+			return -sqrt(fabs(a));
+		else
+			return sqrt(a);
 	}
 
-	double (*gep_op2t_func_box[])(double, double) = {
-		gep_op2t_add,
-		gep_op2t_sub,
-		gep_op2t_mul,
-		gep_op2t_div
+	struct GEP_FUNC_OP2T gep_op2t_func_box[] = {
+		{"+",	gep_op2t_add},
+		{"-",	gep_op2t_sub},
+		{"*",	gep_op2t_mul},
+		{"/",	gep_op2t_div},
+		{"tl",	gep_op2t_take_left},
+		{"tr",	gep_op2t_take_right}
 	};
 
-	double (*gep_op1t_func_box[])(double) = {
-		gep_op1t_linear,
-		gep_op1t_sqrt
+	struct GEP_FUNC_OP1T gep_op1t_func_box[] = {
+		{"",		gep_op1t_linear},
+		{"sqrt",	gep_op1t_sqrt}
 	};
+
 }
+
