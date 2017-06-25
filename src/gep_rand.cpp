@@ -69,7 +69,7 @@ namespace gep
 		return tmpNode;
 	}
 
-	union GEP_NODE gep_rand_node(struct GEP_RAND randSet)
+	union GEP_NODE gep_rand_node(struct GEP_RAND randSet, int inputs)
 	{
 		union GEP_NODE tmpNode;
 		tmpNode.type = rand() % GEP_TYPE_AMOUNT;
@@ -86,8 +86,19 @@ namespace gep
 				break;
 
 			case GEP_TYPE_OPERATOR:
-				tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
-				tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
+				if(rand() % 2 == 0)
+				{
+					tmpNode.op.prefixOp = rand() % GEP_OP1T_AMOUNT;
+				}
+				else
+				{
+					tmpNode.op.op = rand() % GEP_OP2T_AMOUNT;
+				}
+
+				break;
+
+			case GEP_TYPE_VARIABLE:
+				tmpNode.var.index = rand() % inputs;
 				break;
 		}
 
