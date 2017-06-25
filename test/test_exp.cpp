@@ -16,8 +16,10 @@
 #define LEVEL	3
 #define INPUTS	1
 
-#define MUT_RATE		0.1
+#define MUT_RATE		1
 #define ITER_LIMIT		10000
+#define RESTART			100
+#define RESTART_ADD		10
 
 #define RANGE_MIN	0
 #define RANGE_MAX	10
@@ -86,6 +88,16 @@ int main()
 	int counter = 0;
 	while(counter++ < ITER_LIMIT)
 	{
+		// Restart
+		if(counter % RESTART == 0)
+		{
+			ga.remove_same_chro();
+			for(int i = ga.pool_size(); i < limitPoolSize; i++)
+			{
+				ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
+			}
+		}
+
 		// Generate random index array
 		int poolSize = ga.pool_size();
 		vector<int> randIndex = gen_rand_index_vector(poolSize, poolSize * poolSize / 2);
