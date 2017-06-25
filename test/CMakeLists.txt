@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 2.8)
 
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall")
+set(CMAKE_C_FLAGS_RELEASE "-O3")
+
 # Set project
-project(gep_test C)
+project(gep_test CXX)
 
 # Set file list
 file(GLOB PROJECT_SRCS 
-	${CMAKE_CURRENT_SOURCE_DIR}/*.c
+	${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 	)
 
 file(GLOB TEST_TXT
@@ -13,7 +16,7 @@ file(GLOB TEST_TXT
 	)
 
 # Set dependences
-set(PROJECT_DEPS gep galib m)
+set(PROJECT_DEPS gep m)
 if(UNIX)
 	find_library(CONIO_LIB conio
 		"/usr/lib"
