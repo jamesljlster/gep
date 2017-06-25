@@ -16,34 +16,8 @@ namespace gep
 
 	void gep_print_operator(union GEP_NODE node, ostream& os)
 	{
-		switch(node.op.prefixOp)
-		{
-			case GEP_OP1T_LINEAR:
-				break;
-
-			case GEP_OP1T_SQRT:
-				os << "sqrt";
-				break;
-		}
-
-		switch(node.op.op)
-		{
-			case GEP_OP2T_ADD:
-				os << "+";
-				break;
-
-			case GEP_OP2T_SUB:
-				os << "-";
-				break;
-
-			case GEP_OP2T_MUL:
-				os << "*";
-				break;
-
-			case GEP_OP2T_DIV:
-				os << "/";
-				break;
-		}
+		os << gep_op1t_func_box[node.op.prefixOp].name;
+		os << gep_op2t_func_box[node.op.op].name;
 	}
 
 	void gep_print_variable(union GEP_NODE node, ostream& os)

@@ -36,18 +36,20 @@ namespace gep
 
 	double gep_op1t_sqrt(double a)
 	{
-		return sqrt(a);
+		return sqrt(fabs(a));
 	}
 
-	double (*gep_op2t_func_box[])(double, double) = {
-		gep_op2t_add,
-		gep_op2t_sub,
-		gep_op2t_mul,
-		gep_op2t_div
+	struct GEP_FUNC_OP2T gep_op2t_func_box[] = {
+		{"+",	gep_op2t_add},
+		{"-",	gep_op2t_sub},
+		{"*",	gep_op2t_mul},
+		{"/",	gep_op2t_div}
 	};
 
-	double (*gep_op1t_func_box[])(double) = {
-		gep_op1t_linear,
-		gep_op1t_sqrt
+	struct GEP_FUNC_OP1T gep_op1t_func_box[] = {
+		{"",		gep_op1t_linear},
+		{"sqrt",	gep_op1t_sqrt}
 	};
+
 }
+

@@ -33,6 +33,27 @@ namespace gep
 		GEP_TYPE_AMOUNT
 	};
 
+	struct GEP_FUNC_OP1T
+	{
+		const char* name;
+		double (*func)(double);
+	};
+	
+	struct GEP_FUNC_OP2T
+	{
+		const char* name;
+		double (*func)(double, double);
+	};
+
+	struct GEP_RAND
+	{
+		int numMax;
+		int numMin;
+		int expMax;
+		int expMin;
+		int precision;
+	};
+
 	struct GEP_TERMINAL
 	{
 		int type;
@@ -60,17 +81,8 @@ namespace gep
 		struct GEP_VARIABLE var;
 	};
 
-	struct GEP_RAND
-	{
-		int numMax;
-		int numMin;
-		int expMax;
-		int expMin;
-		int precision;
-	};
-
-	extern double (*gep_op2t_func_box[])(double, double);
-	extern double (*gep_op1t_func_box[])(double);
+	extern struct GEP_FUNC_OP2T gep_op2t_func_box[];
+	extern struct GEP_FUNC_OP1T gep_op1t_func_box[];
 
 	double gep_rand_real(int numMax, int numMin, int expMax, int expMin, int precision);
 	std::vector<union GEP_NODE> gep_rand_chro(struct GEP_RAND randSet, int treeLevel, int inputs);
