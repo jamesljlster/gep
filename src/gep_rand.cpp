@@ -68,24 +68,22 @@ namespace gep
 		return tmpNode;
 	}
 
-	union GEP_NODE gep_rand_node(struct GEP_RAND randSet)
+	union GEP_NODE gep_rand_node(struct GEP_RAND randSet, int inputs)
 	{
 		union GEP_NODE tmpNode;
 		tmpNode.type = rand() % GEP_TYPE_AMOUNT;
 		switch(tmpNode.type)
 		{
 			case GEP_TYPE_TERMINAL:
-				tmpNode.t.value = gep_rand_real(
-						randSet.numMax,
-						randSet.numMin,
-						randSet.expMax,
-						randSet.expMin,
-						randSet.precision
-						);
+				tmpNode = gep_rand_terminal(randSet);
 				break;
 
 			case GEP_TYPE_OPERATOR:
-				tmpNode.op.op = rand() % GEP_OP_AMOUNT;
+				tmpNode = gep_rand_op();
+				break;
+
+			case GEP_TYPE_VARIABLE:
+				tmpNode = gep_rand_variable(inputs);
 				break;
 		}
 

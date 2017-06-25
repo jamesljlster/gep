@@ -80,7 +80,7 @@ namespace gep
 
 	double gep_rand_real(int numMax, int numMin, int expMax, int expMin, int precision);
 	std::vector<union GEP_NODE> gep_rand_chro(struct GEP_RAND randSet, int treeLevel, int inputs);
-	union GEP_NODE gep_rand_node(struct GEP_RAND randSet);
+	union GEP_NODE gep_rand_node(struct GEP_RAND randSet, int inputs);
 
 	union GEP_NODE gep_rand_op();
 	union GEP_NODE gep_rand_terminal(struct GEP_RAND randSet);
