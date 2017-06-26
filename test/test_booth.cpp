@@ -171,6 +171,35 @@ double fitness(vector<union GEP_NODE> chro, void* arg)
 
 	static int counter = 0;
 	
+	int i = counter++;
+	if(counter == rows)
+		counter = 0;
+
+	// Set inputs
+	vector<double> inputs;
+	for(int j = 0; j < csv->cols - 1; j++)
+	{
+		inputs.push_back(data[i * cols + j]);
+	}
+
+	// Find error
+	double out = gep_tree_calc(chro, inputs);
+	double mse = pow(out - data[(i + 1) * cols - 1], 2);
+	
+	return mse;
+}
+
+/*
+double fitness(vector<union GEP_NODE> chro, void* arg)
+{
+	csv_t csv = (csv_t)arg;
+
+	int rows = csv->rows;
+	int cols = csv->cols;
+	double* data = csv->data;
+
+	static int counter = 0;
+	
 	double mse = 0;
 	//for(int i = 0; i < csv->rows; i++)
 	{
@@ -192,6 +221,7 @@ double fitness(vector<union GEP_NODE> chro, void* arg)
 	
 	return mse / (double)csv->rows;
 }
+*/
 
 vector<int> gen_rand_index_vector(int size, int swap)
 {
