@@ -29,8 +29,8 @@
 #define RANGE_MAX	10
 #define RANGE_STEP	0.1
 
-#define TRA_CSV_PATH	"booth_func_tra.csv"
-#define TST_CSV_PATH	"booth_func_tst.csv"
+#define TRA_CSV_PATH	"stock-5-1tra_norm.csv"
+#define TST_CSV_PATH	"stock-5-1tst.csv"
 
 #define DEBUG
 
@@ -90,7 +90,7 @@ int main()
 	double tmpFitness = 0;
 	while(counter++ < ITER_LIMIT)
 	{
-		if(counter % ANALY_ITER == 0)
+		//if(counter % ANALY_ITER == 0)
 		{
 			ga.order(fitness, 1, (void*)tra);
 			tmpFitness = fitness(ga.get_chro(0), (void*)tra);
@@ -141,6 +141,30 @@ int main()
 					{
 						union GEP_NODE tmpNode;
 
+						/*
+						if(j < 1)
+						{
+							tmpNode = gep_rand_op();
+						}
+						else if(j < headSize)
+						{
+							int randTmp = rand() % 3;
+							switch(randTmp)
+							{
+								case 0:
+									tmpNode = gep_rand_op();
+									break;
+
+								case 1:
+									tmpNode = gep_rand_terminal(randSet);
+									break;
+
+								case 2:
+									tmpNode = gep_rand_variable(inputSize);
+									break;
+							}
+						}
+						*/
 						if(j < headSize)
 						{
 							tmpNode = gep_rand_op();
@@ -164,10 +188,12 @@ int main()
 
 			// Order
 			ga.order(fitness_single, 1, (void*)tra);
+			/*
 			tmpFitness = fitness(ga.get_chro(0), (void*)tra);
 			cout << "Turn " << turn <<  ", mse: " <<  tmpFitness << endl;
 			gep_print_chro(ga.get_chro(0), cout);
 			cout << endl;
+			*/
 
 			// Kill after
 			ga.kill_after(limitPoolSize - 1);
