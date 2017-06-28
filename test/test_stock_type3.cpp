@@ -18,7 +18,7 @@
 
 #define LEVEL	5
 
-#define MUT_RATE		0.01
+#define MUT_RATE		0.1
 #define ITER_LIMIT		10000
 #define ANALY_ITER		100
 #define RESTART			1000
@@ -66,6 +66,23 @@ int main(int argc, char* argv[])
 		}
 	}
 
+	double mutBase = MUT_RATE;
+	if(argc > 2)
+	{
+		char* tmpPtr;
+		double tmp = strtod(argv[2], &tmpPtr);
+		if(tmpPtr == argv[2])
+		{
+			cout << "Failed to parse " << argv[2] << " as mutation rate base" << endl;
+			return -1;
+		}
+		else
+		{
+			cout << "Using mutation rate base: " << tmp << endl;
+			mutBase = tmp;
+		}
+	}
+
 	// Prepare dataset
 	int iResult;
 	csv_t tra = NULL;
@@ -106,6 +123,7 @@ int main(int argc, char* argv[])
 	double mutRate = MUT_RATE;
 	int counter = 0;
 	double tmpFitness = 0;
+	double mseMax = 0;
 	cout << "Iter, mse, chro" << endl;
 	while(counter++ < ITER_LIMIT)
 	{
@@ -189,6 +207,13 @@ int main(int argc, char* argv[])
 			cout << counter << ", " <<  tmpFitness << ", ";
 			gep_print_chro(ga.get_chro(0), cout);
 			cout << endl;
+
+			// Find new mutation rate
+			if(tmpFitness > mseMax)
+			{
+				mseMax = tmpFitness;
+			}
+			mutRate = mutBase * ((tmpFitness / mseMax) / sqrt(counter));
 
 			// Kill after
 			ga.kill_after(limitPoolSize - 1);
