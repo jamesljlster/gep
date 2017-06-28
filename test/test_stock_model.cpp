@@ -44,9 +44,14 @@ double fitness(vector<union GEP_NODE> chro, void* arg);
 vector<int> gen_rand_index_vector(int size, int swap);
 vector<char> gen_crossover_mask(int size, int swap);
 
-int main()
+int main(int argc, char* argv[])
 {
-	srand(time(NULL));
+	// Checking
+	if(argc < 1)
+	{
+		cout << "Pass gep chromosome string to run the program" << endl;
+		return -1;
+	}
 
 	// Prepare dataset
 	int iResult;
@@ -68,132 +73,7 @@ int main()
 	}
 
 	// Create model
-	union GEP_NODE tmpNode;
-	vector<union GEP_NODE> gepModel;
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_ADD;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_ADD;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_ADD;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_DIV;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SQRT;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_ADD;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SIN;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SUB;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_MUL;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_MUL;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SUB;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SIN;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_SIN;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_MUL;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_OPERATOR;
-	tmpNode.op.op = GEP_OP_TAKE_LEFT;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 4;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 5;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = 48.6125;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = 0.131;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 0;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 8;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = 1;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 8;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = 0.5041;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = 2.56;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 2;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 0;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 8;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = -0.487;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_VARIABLE;
-	tmpNode.var.index = 6;
-	gepModel.push_back(tmpNode);
-
-	tmpNode.type = GEP_TYPE_TERMINAL;
-	tmpNode.t.value = -0.031;
-	gepModel.push_back(tmpNode);
+	vector<union GEP_NODE> gepModel = gep_parse(argv[1]);
 
 	// Print model
 	cout << "Using gep model: ";
