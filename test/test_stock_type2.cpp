@@ -88,6 +88,7 @@ int main()
 	double mutRate = MUT_RATE;
 	int counter = 0;
 	double tmpFitness = 0;
+	cout << "Iter, mse, chro" << endl;
 	while(counter++ < ITER_LIMIT)
 	{
 		/*
@@ -167,7 +168,7 @@ int main()
 			// Order
 			ga.order(fitness, 1, (void*)tra);
 			tmpFitness = fitness(ga.get_chro(0), (void*)tra);
-			cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
+			cout << counter << ", " <<  tmpFitness << ", ";
 			gep_print_chro(ga.get_chro(0), cout);
 			cout << endl;
 

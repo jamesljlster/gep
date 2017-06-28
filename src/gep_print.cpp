@@ -26,6 +26,7 @@ namespace gep
 
 	void gep_print_chro(std::vector<union GEP_NODE> chro, ostream& os)
 	{
+		os << "\"";
 		for(int i = 0; i < chro.size(); i++)
 		{
 			switch(chro[i].type)
@@ -48,7 +49,7 @@ namespace gep
 
 			if(i == chro.size() - 1)
 			{
-				os << endl;
+				os << "\"";
 			}
 			else
 			{
