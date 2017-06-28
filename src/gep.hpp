@@ -92,6 +92,7 @@ namespace gep
 	union GEP_NODE gep_rand_variable(int inputs);
 
 	void gep_print_chro(std::vector<union GEP_NODE> chro, std::ostream& os);
+	std::vector<union GEP_NODE> gep_parse(const char* chroStr);
 
 	double gep_tree_calc(std::vector<union GEP_NODE> chro, std::vector<double> inputs);
 }
