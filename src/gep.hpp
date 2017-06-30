@@ -20,8 +20,13 @@ namespace gep
 		GEP_OP_EXP,
 		GEP_OP_AVG,
 		GEP_OP_ABS,
-		GEP_OP_LOG,
+//		GEP_OP_LOG,
 		GEP_OP_INV,
+		GEP_OP_SIN,
+		GEP_OP_COS,
+		GEP_OP_POW2,
+//		GEP_OP_POW3,
+//		GEP_OP_CURT,
 
 		GEP_OP_AMOUNT
 	};
@@ -87,6 +92,7 @@ namespace gep
 	union GEP_NODE gep_rand_variable(int inputs);
 
 	void gep_print_chro(std::vector<union GEP_NODE> chro, std::ostream& os);
+	std::vector<union GEP_NODE> gep_parse(const char* chroStr);
 
 	double gep_tree_calc(std::vector<union GEP_NODE> chro, std::vector<double> inputs);
 }

@@ -103,6 +103,31 @@ namespace gep
 		}
 	}
 
+	double gep_sin(double a, double b)
+	{
+		return sin(a);
+	}
+
+	double gep_cos(double a, double b)
+	{
+		return cos(a);
+	}
+
+	double gep_pow2(double a, double b)
+	{
+		return pow(a, 2);
+	}
+
+	double gep_pow3(double a, double b)
+	{
+		return pow(a, 3);
+	}
+
+	double gep_curt(double a, double b)
+	{
+		return pow(a, 1.0 / 3.0);
+	}
+
 	struct GEP_FUNC gep_func_box[] = {
 		{"+",	gep_add},
 		{"-",	gep_sub},
@@ -116,8 +141,13 @@ namespace gep
 		{"exp", gep_exp},
 		{"avg", gep_avg},
 		{"abs", gep_abs},
-		{"log", gep_log},
-		{"inv", gep_inv}
+		//{"log", gep_log},
+		{"inv", gep_inv},
+		{"sin", gep_sin},
+		{"cos", gep_cos},
+		{"pow2",	gep_pow2} //,
+		//{"pow3",	gep_pow3},
+		//{"curt",	gep_curt}
 	};
 }
 

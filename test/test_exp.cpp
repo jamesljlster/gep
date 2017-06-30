@@ -16,9 +16,10 @@
 #define LEVEL	4
 #define INPUTS	1
 
-#define MUT_RATE		0.01
-#define ITER_LIMIT		10000
-#define RESTART			100
+#define MUT_RATE		0.9
+#define MUT_DECAY		0.996
+#define ITER_LIMIT		30000
+#define RESTART			10
 #define RESTART_ADD		10
 #define POOL_WEIGHT		10
 
@@ -86,17 +87,21 @@ int main()
 	int limitPoolSize = ga.pool_size();
 
 	// Run task
+	double mutRate = MUT_RATE;
 	int counter = 0;
+	double tmpFitness = 0;
 	while(counter++ < ITER_LIMIT)
 	{
 		// Restart
 		if(counter % RESTART == 0)
 		{
 			ga.remove_same_chro();
-			for(int i = ga.pool_size(); i < limitPoolSize + RESTART_ADD; i++)
+			for(int i = ga.pool_size(); i < limitPoolSize * 2; i++)
 			{
 				ga.insert(gep_rand_chro(randSet, LEVEL, INPUTS));
 			}
+
+			mutRate = MUT_RATE * (tmpFitness / (double)counter);
 		}
 
 		// Generate random index array
@@ -114,7 +119,7 @@ int main()
 		{
 			for(int j = 0; j < chroLen; j++)
 			{
-				if(rand() % 100 < MUT_RATE * 100)
+				if(rand() % 100 < mutRate * 100)
 				{
 					union GEP_NODE tmpNode = gep_rand_node(randSet, INPUTS);
 
@@ -137,13 +142,14 @@ int main()
 
 		// Order
 		ga.order(fitness, 1, (void*)&fitData);
-		double tmpFitness = fitness(ga.get_chro(0), (void*)&fitData);
+		tmpFitness = fitness(ga.get_chro(0), (void*)&fitData);
 		cout << "Iter " << counter <<  ", mse: " <<  tmpFitness << endl;
 		gep_print_chro(ga.get_chro(0), cout);
 		cout << endl;
 
 		// Kill after
 		ga.kill_after(limitPoolSize - 1);
+
 	}
 
 	delete[] dataset;
